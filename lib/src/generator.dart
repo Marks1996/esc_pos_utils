@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
 import 'package:flutter/services.dart';
 import 'package:hex/hex.dart';
-import 'package:image/image.dart';
+import 'package:image_v3/image_v3.dart';
 import 'package:gbk_codec/gbk_codec.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'enums.dart';
@@ -146,22 +146,16 @@ class Generator {
 
     // Create a black bottom layer
     final biggerImage = copyResize(image, width: widthPx, height: heightPx);
-    // fill(biggerImage, 0);
-    fill(biggerImage, color: ColorUint8(0));
+    fill(biggerImage, 0);
     // Insert source image into bigger one
-    // drawImage(biggerImage, image, dstX: 0, dstY: 0);
-    drawRect(biggerImage,
-        mask: image, x1: 0, y1: 0, x2: 0, y2: 0, color: ColorUint8(0));
+    drawImage(biggerImage, image, dstX: 0, dstY: 0);
 
     int left = 0;
     final List<List<int>> blobs = [];
 
     while (left < widthPx) {
-      // final Image slice = copyCrop(biggerImage,left,0,lineHeight, heightPx);
-      final Image slice = copyCrop(biggerImage,
-          x: left, y: 0, width: widthPx, height: heightPx);
-      // final Uint8List bytes = slice.getBytes(format: Format.luminance);
-      final Uint8List bytes = slice.getBytes(order: ChannelOrder.rgba);
+      final Image slice = copyCrop(biggerImage, left, 0, lineHeight, heightPx);
+      final Uint8List bytes = slice.getBytes(format: Format.luminance);
       blobs.add(bytes);
       left += lineHeight;
     }
@@ -180,8 +174,7 @@ class Generator {
 
     // R/G/B channels are same -> keep only one channel
     final List<int> oneChannelBytes = [];
-    // final List<int> buffer = image.getBytes(format: Format.rgba);
-    final List<int> buffer = image.getBytes(order: ChannelOrder.rgba);
+    final List<int> buffer = image.getBytes(format: Format.rgba);
     for (int i = 0; i < buffer.length; i += 4) {
       oneChannelBytes.add(buffer[i]);
     }
@@ -585,10 +578,8 @@ class Generator {
     const bool highDensityVertical = true;
 
     invert(image);
-    // flip(image, Flip.horizontal);
-    flip(image, direction: FlipDirection.horizontal);
-    // final Image imageRotated = copyRotate(image, 270);
-    final Image imageRotated = copyRotate(image, angle: 270);
+    flip(image, Flip.horizontal);
+    final Image imageRotated = copyRotate(image, 270);
 
     const int lineHeight = highDensityVertical ? 3 : 1;
     final List<List<int>> blobs = _toColumnFormat(imageRotated, lineHeight * 8);

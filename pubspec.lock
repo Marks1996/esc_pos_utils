@@ -115,14 +115,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.15.2"
-  image:
+  image_v3:
     dependency: "direct main"
     description:
-      name: image
-      sha256: "483a389d6ccb292b570c31b3a193779b1b0178e7eb571986d9a49904b6861227"
+      name: image_v3
+      sha256: dd9f790f2397dd243a74e606a57780e03e2fb67f372baf587e7780c37bd0258d
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.0.15"
+    version: "3.3.0"
   js:
     dependency: transitive
     description:
